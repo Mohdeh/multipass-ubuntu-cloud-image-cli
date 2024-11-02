@@ -21,6 +21,7 @@ Multipass is a multi-platform tool for allowing users to easily spin up Ubuntu C
 
 
 
+
 ## Design and Implementation
 1. Define an Interface Class:
    - Create an interface `IUbuntuImageFetcher` that declares the required methods:
