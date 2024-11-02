@@ -18,3 +18,29 @@ Multipass is a multi-platform tool for allowing users to easily spin up Ubuntu C
   
   - CMakeLists.txt: To handle building and dependencies.
   - README.md: To provide instructions on how to build and run the CLI.
+
+
+
+## Design and Implementation
+1. Define an Interface Class:
+   - Create an interface `IUbuntuImageFetcher` that declares the required methods:
+     - std::vector<std::string> getSupportedReleases() const
+     - std::string getCurrentLTSRelease() const
+     - std::string getSha256ForDiskImage(const std::string& release) const
+       
+   - The implementation class will fetch and parse the JSON data, extracting the required information.
+
+2. Implement the Derived Class:
+   - **Fetch JSON Data**: Implement a function that downloads the JSON file from the specified URL.
+   - **Parse JSON Data**: Use `nlohmann::json` (or another JSON parser) to extract the list of supported releases, the current LTS version, and the `sha256` hash of the `disk1.img` for a given release.
+   - **Data Processing and Storage**: Store the fetched data in member variables for reuse. This avoids repeated network requests.
+
+3. Methods for Each Requirement:
+   - **Get Supported Releases**: Parse the JSON to get all Ubuntu releases that are currently supported.
+   - **Get Current LTS Version**: Filter the JSON data to find the LTS version by checking the release property.
+   - **Get** `sha256` **for** `disk1.img`: Extract and return the `sha256` checksum for the `disk1.img` of a specified release.
+
+4. CLI Implementation:
+   - Use `argc` and `argv` to handle command-line arguments.
+   - Based on the input, call the appropriate method and display the output in the CLI.
+
