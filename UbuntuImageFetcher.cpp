@@ -64,14 +64,9 @@ public:
         return lts_release;
     }
 
-    
+
 
     std::string getSha256ForDiskImage(const std::string& release) const override {
-        // Find sha256 checksum for disk1.img for a given release
-        
-    }
-
-    std::string UbuntuImageFetcher::getSha256ForDiskImage(const std::string& release) const {
         // Find sha256 checksum for disk1.img for a given release
         // Loop through each product in the JSON "products" section
         for (const auto& [productKey, productData] : jsonData["products"].items()) {
