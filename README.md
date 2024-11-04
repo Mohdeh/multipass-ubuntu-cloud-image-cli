@@ -14,7 +14,7 @@ Multipass is a multi-platform tool for allowing users to easily spin up Ubuntu C
    - `./UbuntuImageCLI --sha256 <release_name>`: Display the `sha256` checksum for `disk1.img` of the specified release.
 
 
-\n
+
 ## Project Structure and Dependencies
 1. Language & Libraries:
    - The code will be written in C++17.
