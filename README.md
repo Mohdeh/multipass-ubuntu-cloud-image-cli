@@ -1,6 +1,20 @@
 # multipass-ubuntu-cloud-image-cli
 Multipass is a multi-platform tool for allowing users to easily spin up Ubuntu Cloud instances. It is written in C++ and interfaces with a number of 3rd party libraries and technologies. Multipass strives to have a clean and concise CLI without adding too many options to burden end users.
 
+
+## Building and Running the CLI
+1. **Build Instructions**:
+   - Clone the repository.
+   - Run `cmake .` in the project directory.
+   - Run `make` to build the executable.
+     
+2. **Usage**:
+   - `./UbuntuImageCLI --supported`: List all supported releases.
+   - `./UbuntuImageCLI --current-lts`: Display the current LTS version.
+   - `./UbuntuImageCLI --sha256 <release_name>`: Display the `sha256` checksum for `disk1.img` of the specified release.
+
+
+\n
 ## Project Structure and Dependencies
 1. Language & Libraries:
    - The code will be written in C++17.
