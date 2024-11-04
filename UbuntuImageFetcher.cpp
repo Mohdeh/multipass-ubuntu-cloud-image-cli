@@ -68,28 +68,36 @@ public:
 
     std::string getSha256ForDiskImage(const std::string& release) const override {
         // Find sha256 checksum for disk1.img for a given release
-        try {
-            for (const auto& product : jsonData["products"].items()) {
-                const auto& product_data = product.value();
+        
+    }
+
+    std::string UbuntuImageFetcher::getSha256ForDiskImage(const std::string& release) const {
+        // Find sha256 checksum for disk1.img for a given release
+        // Loop through each product in the JSON "products" section
+        for (const auto& [productKey, productData] : jsonData["products"].items()) {
+            // Check if this product matches the requested release and architecture (amd64)
+            if (productData.contains("version") && productData["version"] == release &&
+                productData.contains("arch") && productData["arch"] == "amd64") {
     
-                // Match the release name and architecture (amd64)
-                if (product_data["release"].get<std::string>() == release &&
-                    product_data["arch"].get<std::string>() == "amd64") {
+                // Access the "versions" dictionary and find the latest version
+                const auto& versions = productData["versions"];
+                if (!versions.is_object() || versions.empty()) {
+                    throw std::runtime_error("No versions available for the specified release.");
+                }
     
-                    // Find `disk1.img` under "images" and return its sha256
-                    const auto& images = product_data["versions"]["arch"]["images"];
-                    for (const auto& image : images.items()) {
-                        if (image.value()["path"] == "disk1.img") {
-                            return image.value()["sha256"].get<std::string>();
-                        }
-                    }
+                // Assuming the versions are sorted by date, access the last version in the JSON object
+                const auto& latestVersion = versions.crbegin()->second;
+    
+                // Check if this version has "items" and if "disk1.img" exists within it
+                if (latestVersion.contains("items") && latestVersion["items"].contains("disk1.img")) {
+                    return latestVersion["items"]["disk1.img"]["sha256"];
+                } else {
+                    throw std::runtime_error("disk1.img not found for the specified release.");
                 }
             }
-        } catch (const std::exception& e) {
-            throw std::runtime_error("Error finding sha256 for disk1.img: " + std::string(e.what()));
         }
-    
-        throw std::runtime_error("Release or disk1.img not found for " + release);
+        // If no matching release found, throw an exception
+        throw std::runtime_error("Specified release or architecture not found.");
     }
 
 
